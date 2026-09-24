@@ -1,19 +1,8 @@
-#CREATE DATABASE
-CREATE DATABASE HOSPITAL_MANAGMENT_SYSTEM;
+-- Sample data. Every name, address and phone number is made up.
+-- Loaded parents first so foreign keys are satisfied as rows go in.
 
-#Use DATABASE
-USE HOSPITAL_MANAGMENT_SYSTEM;
-
-#CREATION OF TABLE & ROW INSERTION 
-
-#Physician Table
-CREATE TABLE Physician(
-employeeid INT PRIMARY KEY,
-name VARCHAR(150) NOT NULL,
-position VARCHAR(150) NOT NULL
-);
-
-INSERT INTO Physician(employeeid,name,position) 
+-- physician
+INSERT INTO physician (employeeid,name,position)
 VALUES
 (1,'Dr.Adam Turner','Staff Internist'),
 (2,'Dr.Sophia Clark','Attending Physician'),
@@ -51,16 +40,27 @@ VALUES
 (34,'Dr.Hazel Brown','Senior Resident'),
 (35,'Dr.Sebastian Hall','Head Chief of Urology');
 
-# Affiliated_with
-CREATE TABLE affiliated_with(
-physicianid INT NOT NULL,
-departmentid INT NOT NULL,
-primaryaffiliation VARCHAR(1) NOT NULL,
-FOREIGN KEY(physicianid) references Physician(employeeid),
-Foreign Key(departmentid) references department(department_id)
-);
+-- department
+INSERT INTO department (department_id,dept_name,head)
+VALUES
+(1,'General Medicine',4),
+(2,'Surgery',7),
+(3,'Psychiatry',9),
+(4,'Cardiology',13),
+(5,'Nephrology',10),
+(6,'Urology',35),
+(7,'Neurology',30),
+(8,'Physiotherapy',27),
+(9,'ENT',15),
+(10,'Pulmonology',5),
+(11,'Gastroenterology',18),
+(12,'Gynecology',12),
+(13,'Neonatal',22),
+(14,'Critical Care',25),
+(15,'Orthopedics',21);
 
-INSERT INTO affiliated_with(physicianid,departmentid,primaryaffiliation) 
+-- affiliated_with
+INSERT INTO affiliated_with (physicianid,departmentid,primaryaffiliation)
 VALUES
 (1,1,'t'),
 (2,1,'t'),
@@ -100,42 +100,9 @@ VALUES
 (34,11,'t'),
 (35,6,'t');
 
-#Department Table
-create table department(
-department_id int Primary Key ,
-dept_name VARCHAR(150) NOT NULL,
-head int not null,
-Foreign Key(head) references Physician(employeeid)
-);
-
-Insert into department(department_id,dept_name,head)
-values
-(1,'General Medicine',4),
-(2,'Surgery',7),
-(3,'Psychiatry',9),
-(4,'Cardiology',13),
-(5,'Nephrology',10),
-(6,'Urology',35),
-(7,'Neurology',30),
-(8,'Physiotherapy',27),
-(9,'ENT',15),
-(10,'Pulmonology',5),
-(11,'Gastroenterology',18),
-(12,'Gynecology',12),
-(13,'Neonatal',22),
-(14,'Critical Care',25),
-(15,'Orthopedics',21);
-
-# Nurse Table
-CREATE TABLE Nurse(
-nurse_id INT NOT NULL,
-name VARCHAR(150) NOT NULL,
-position VARCHAR(150) NOT NULL,
-registered VARCHAR(10) NOT NULL
-);
-
-INSERT INTO Nurse(nurse_id,name,position,registered)
-VALUES 
+-- nurse
+INSERT INTO nurse (nurse_id,name,position,registered)
+VALUES
 (1,'Emily Johnson','Head Nurse','Yes'),
 (2,'Hannah Davis','Nurse','Yes'),
 (3,'Daniel Lewis','Nurse','No'),
@@ -170,19 +137,8 @@ VALUES
 (32,'Aria Stewart','Nurse','Yes'),
 (33,'Levi Morris','Sister IR','No');
 
-# Patient Table
-CREATE TABLE Patient(
-patient_id INT Primary key auto_increment,
-name VARCHAR(100) NOT NULL,
-surname VARCHAR(100) NOT NULL,
-address VARCHAR(100) NOT NULL,
-Gender VARCHAR(150) NOT NULL,
-phone VARCHAR(150) NOT NULL,
-primary_check INT NOT NULL,
-FOREIGN KEY(PRIMARY_CHECK) REFERENCES Physician(employeeid)
-);
-
-INSERT INTO Patient(Patient_id,name,surname,address,Gender,phone,primary_check)
+-- patient
+INSERT INTO patient (patient_id,name,surname,address,gender,phone,primary_check)
 VALUES
 (01,'Ethan','James','10 Lake View','Male','555-1000-111',2),
 (02,'Sophia','Cruz','22 Green Valley','Female','555-1000-222',2),
@@ -224,66 +180,51 @@ VALUES
 (38,'Leah','Sanchez','2020 Pine St','Female','555-1003-010',30),
 (39,'Carter','Phillips','2121 Rose St','Male','555-1003-111',15);
 
-# Patient_Diagnosis Table
-CREATE TABLE PATIENT_DIAGNOSIS(
-Diagnosis VARCHAR(150) NOT NULL,
-Prescription VARCHAR(150) NOT NULL,
-Patient_ID INT NOT NULL,
-Physician_id INT NOT NULL,
-FOREIGN KEY(Patient_id) references Patient(Patient_id),
-FOREIGN KEY(Physician_id) references Physician(employeeid)
-);
-
-INSERT INTO PATIENT_DIAGNOSIS(Diagnosis,Prescription,Patient_ID,Physician_id)
+-- patient_diagnosis
+INSERT INTO patient_diagnosis (diagnosis,prescription,patient_id,physician_id)
 VALUES
 ('Hypertension','Amlodipine',1,2),
-('Arthritis','Ibuprofen & Diclofenac',4,17), 
-('Anxiety Disorder','Sertraline',3,9),     
-('Muscular Dystrophy','Prednisone',5,24),                            
-('Asthma','Montelukast',2,2),        
-('IgA Nephropathy','Cyclophosphamide',30,10),     
-('Chronic Pain','Gabapentin',6,7),    
-('Acoustic neuroma','Stereotactic Radiosurgery',7,13),     
-('Septic Shock','Norepinephrine',8,25),   
-('Kidney Stones','Tamsulosin',9,28),     
-('Parkinsons Disease','Levodopa',10,19),  
-('COPD','Tiotropium',11,5), 
-('Neonatal Jaundice','Exchange Transfusion',12,33),  
-('Chronic Pain','Pregabalin',13,3),       
-('Gallstones','ERCP',14,18),        
-('Type 1 Diabetes','Insulin Glargine',15,6),                                  
-('Migraine','Ergotamine',16,19),      
-('Tonsillitis','Clindamycin',17,15),         
-('IBD','Azathioprine',18,26),       
-('CAD','Clopidogrel',19,6),     
-('COPD','Budesonide',20,20),   
-('UTI','Ceftriaxone',21,28),    
-('ADD','Atomoxetine',22,6),      
-('TBI','Ketamine',23,25),             
-('Neuropathic Pain','Duloxetine',24,19),                  
-('COPD','Pulmonary Rehab',25,24),      
-('Overactive Bladder','Tolterodine',26,28),             
-('Sports Injuries','Physiotherapy',27,27),                
-('Psoriasis','Cyclosporine',28,6),                            
+('Arthritis','Ibuprofen & Diclofenac',4,17),
+('Anxiety Disorder','Sertraline',3,9),
+('Muscular Dystrophy','Prednisone',5,24),
+('Asthma','Montelukast',2,2),
+('IgA Nephropathy','Cyclophosphamide',30,10),
+('Chronic Pain','Gabapentin',6,7),
+('Acoustic neuroma','Stereotactic Radiosurgery',7,13),
+('Septic Shock','Norepinephrine',8,25),
+('Kidney Stones','Tamsulosin',9,28),
+('Parkinsons Disease','Levodopa',10,19),
+('COPD','Tiotropium',11,5),
+('Neonatal Jaundice','Exchange Transfusion',12,33),
+('Chronic Pain','Pregabalin',13,3),
+('Gallstones','ERCP',14,18),
+('Type 1 Diabetes','Insulin Glargine',15,6),
+('Migraine','Ergotamine',16,19),
+('Tonsillitis','Clindamycin',17,15),
+('IBD','Azathioprine',18,26),
+('CAD','Clopidogrel',19,6),
+('COPD','Budesonide',20,20),
+('UTI','Ceftriaxone',21,28),
+('ADD','Atomoxetine',22,6),
+('TBI','Ketamine',23,25),
+('Neuropathic Pain','Duloxetine',24,19),
+('COPD','Pulmonary Rehab',25,24),
+('Overactive Bladder','Tolterodine',26,28),
+('Sports Injuries','Physiotherapy',27,27),
+('Psoriasis','Cyclosporine',28,6),
 ('RDS','Surfactant Therapy',29,33),
-('COVID-19','Molnupiravir',31,5),   
-('Gastritis','Omeprazole',32,18),      
-('GAD','Escitalopram',33,2),    
-('Sinusitis','Ibuprofen',34,13),     
+('COVID-19','Molnupiravir',31,5),
+('Gastritis','Omeprazole',32,18),
+('GAD','Escitalopram',33,2),
+('Sinusitis','Ibuprofen',34,13),
 ('Burn Injuries','Silver Sulfadiazine',35,20),
 ('Osteoporosis','Alendronate',36,21),
 ('Depression','Sertraline',37,9),
 ('Myasthenia Gravis','Azathioprine',38,30),
 ('Otitis Media','Cefuroxime',39,15);
 
-#Procedure Table
-CREATE TABLE procedures(
-code INT PRIMARY KEY,
-name VARCHAR(150) NOT NULL,
-cost INT NOT NULL
-);
-
-INSERT INTO procedures(code,name,cost)
+-- procedures
+INSERT INTO procedures (code,name,cost)
 VALUES
 (1,'X-ray-Chest',1100),
 (2,'X-ray-Abdomen',1250),
@@ -306,20 +247,3 @@ VALUES
 (19,'X-ray-Extremities',350),
 (20,'MRI-Knee',4200);
 
-#DATA RETRIEVAL USING SELECT STATEMENT
-SELECT * FROM physician;
-SELECT * FROM affiliated_with;
-SELECT * FROM department;
-SELECT * FROM nurse;
-SELECT * FROM patient;
-SELECT * FROM patient_diagnosis;
-SELECT * FROM procedures;
-
-# DESC STATEMENT
-DESC physician;
-DESC affiliated_with;
-DESC department;
-DESC nurse;
-DESC patient;
-DESC patient_diagnosis;
-DESC procedures;
