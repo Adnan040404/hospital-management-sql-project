@@ -2,8 +2,8 @@
 
 ![tests](https://github.com/Adnan040404/hospital-management-sql-project/actions/workflows/tests.yml/badge.svg)
 
-**Level: beginner.** This is a SQL practice project: one small hospital database
-and 31 queries against it, from simple filters up to window functions and CTEs.
+This is a SQL practice project: one small hospital database and 33 queries
+against it, from simple filters up to window functions and CTEs.
 It's the kind of project you build while learning SQL. I've kept it as that and
 tidied it so it actually runs, and so each answer is checked.
 
